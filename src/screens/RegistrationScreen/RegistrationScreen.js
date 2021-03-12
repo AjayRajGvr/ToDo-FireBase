@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import styles from './registration_styles.css';
+import styles from './registration_styles';
 
 export default function RegistrationScreen(){
  
