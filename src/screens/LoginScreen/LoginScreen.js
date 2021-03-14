@@ -1,24 +1,33 @@
 import React, {useState} from 'react';
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TextInput, TouchableOpacity,Button, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { useNavigation } from '@react-navigation/native';
+import  Firebase  from '../../firebase/config';
+
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-
   //functions
 
+  const navigation = useNavigation();
+
   const onFooterLinkPress = () => {
-    console.log('clicked on dont have account')
-  }
+    navigation.navigate('Registration')
+  };
 
   const onLoginPress = () => {
-    console.log('clicked on login button')
-  }
+  
 
-
+        Firebase.auth()
+            .signInWithEmailAndPassword(email,password)
+            .then(() => navigation.navigate('Home'))
+            .catch(error => alert(error))
+  };
 
   //html render
 
@@ -27,7 +36,7 @@ export default function LoginScreen() {
       <KeyboardAwareScrollView
         style={{flex: 1, width: '100%'}}
         keyboardShouldPersistTaps="always">
-        <Image styles={styles.logo} source={require('../../assets/icon.png')} />
+        <Image styles={styles.logo} source={require('../../../assets/icon.png')} />
 
         <TextInput
           style={styles.input}
@@ -50,8 +59,11 @@ export default function LoginScreen() {
           autoCapitalize="none"
         />
 
-        <TouchableOpacity style={styles.button} onPress={() => onLoginPress()}>
+        <TouchableOpacity style={styles.button} onPress={onLoginPress}>
           <Text style={styles.buttonTitle}>Log In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('Home')}>
+          <Text style={styles.buttonTitle}>Skip Log In</Text>
         </TouchableOpacity>
 
         <View style={styles.footerView}>
@@ -63,6 +75,9 @@ export default function LoginScreen() {
           </Text>
         </View>
       </KeyboardAwareScrollView>
+      <View style={{position:'absolute',left:0,right:0,bottom:0,flex:0.1}}>
+      <Button onPress={()=> navigation.navigate('About')} title='About'/>
+  </View>
     </View>
   );
 }
